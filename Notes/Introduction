@@ -1,0 +1,14 @@
+Note : Hooks are a new feature addition in React version 16.8 which allow you to use React features without having to write a class.
+
+Hooks allow functional components to have access to state and other React features. Because of this, class components are generally no longer needed.
+
+Note: Hooks don't work inside classes.
+
+Rules of Hooks:
+
+Only Call Hooks at the top level
+don't call hooks inside loops, conditions, or nested functions
+
+Hooks can only be called inside React functional components.
+Hooks can only be called at the top level of a component.
+Hooks cannot be conditiona

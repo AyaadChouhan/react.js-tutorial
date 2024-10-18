@@ -1,0 +1,29 @@
+{ useState Hook }
+The React useState Hook allows us to track state in a function component.
+
+usestate hook is use for when you want to track data or something and update on click then you don't need to declare a varible/state and add functionality on it, you simply use React feature called useState() Hook 
+here is the example :
+
+import React, { useState } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState(0); // 0 is the initial state value
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
+    </div>
+  );
+}
+
+count is the state variable (initialized with 0).
+setCount is the function used to update count.
+Clicking the button increases the count by 1.
+
+
+Note: Summary => [UseState]
+
+with the theState hook, the state doesnt have to be an object
+The useState hook returns an array with 2 element 
+the first element is the currcent value of the state, and the second element is a state setter function.
