@@ -1,0 +1,149 @@
+useCallback Hook...........................
+Purpose: The useCallback hook is used to memoize a function, ensuring that the same function instance is returned on every re-render unless its dependencies change. This can be useful for optimizing performance when passing functions as props to child components, as it prevents unnecessary re-renders.
+
+Syntax:
+
+const memoizedCallback = useCallback(
+  () => {
+  },
+  [dependencies]
+);
+
+Parameters:
+
+Callback function: The function you want to memoize.
+Dependency array: If any value in the dependency array changes, the memoized function will be re-created.
+Use Cases:
+
+When passing functions to child components that depend on specific values.
+When you want to avoid unnecessary re-creation of functions during re-renders, especially in components that use React.memo.
+
+Example:
+
+import { useCallback, useState } from "react";
+
+function Parent() {
+  const [count, setCount] = useState(0);
+  const [todos, setTodos] = useState([]);
+
+  const addTodo = useCallback(() => {
+    setTodos((prevTodos) => [...prevTodos, "New Todo"]);
+  }, [todos]);
+
+  return (
+    <div>
+      <TodoList addTodo={addTodo} todos={todos} />
+      <button onClick={() => setCount(count + 1)}>Increment: {count}</button>
+    </div>
+  );
+}
+
+function TodoList({ addTodo, todos }) {
+  console.log("TodoList re-rendered");
+  return (
+    <div>
+      <button onClick={addTodo}>Add Todo</button>
+      {todos.map((todo, index) => (
+        <p key={index}>{todo}</p>
+      ))}
+    </div>
+  );
+}
+
+==============================================================================
+
+
+useRef Hook.....................
+Purpose: The useRef hook allows you to persist values across renders without triggering re-renders. It also provides a way to access DOM elements directly.
+
+Syntax:
+
+const ref = useRef(initialValue);
+Properties:
+
+ref.current: Holds the mutable value that persists across renders.
+Use Cases:
+
+Accessing DOM elements: You can attach ref to a DOM element and access it later to manipulate or retrieve its value.
+Storing mutable values: You can use useRef to store values that need to persist but don’t cause re-renders when they change, like a previous state or a timeout ID.
+Example:
+
+import { useRef, useState, useEffect } from "react";
+
+function UseRefExample() {
+  const inputRef = useRef(null);  // Access DOM element
+  const count = useRef(0);        // Mutable value that doesn't trigger re-renders
+  const [value, setValue] = useState("");
+
+  useEffect(() => {
+    count.current = count.current + 1; // Persists across renders
+  });
+
+  function focusInput() {
+    inputRef.current.focus();  // Access the DOM element directly
+  }
+
+  return (
+    <div>
+      <input
+        ref={inputRef}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+      <p>Render Count: {count.current}</p>
+      <button onClick={focusInput}>Focus Input</button>
+    </div>
+  );
+}
+
+
+
+=======================================================
+
+
+useMemo Hook......................
+Purpose: The useMemo hook is used to memoize expensive computations and return a memoized value. It only re-computes the value when its dependencies change, helping optimize performance by avoiding unnecessary calculations on each render.
+
+Syntax:
+
+
+const memoizedValue = useMemo(() => {
+  // Expensive calculation
+  return computedValue;
+}, [dependencies]);
+Parameters:
+
+Callback function: The function that returns the computed value.
+Dependency array: The memoized value will only be recalculated when one of the dependencies changes.
+Use Cases:
+
+Expensive calculations: Use useMemo to prevent expensive calculations from running on every render.
+Optimizing rendering performance: Useful when a component's performance is negatively affected by unnecessary re-calculations.
+Example:
+
+import { useMemo, useState } from "react";
+
+function UseMemoExample() {
+  const [count, setCount] = useState(0);
+  const [todos, setTodos] = useState([]);
+
+  const expensiveCalculation = useMemo(() => {
+    console.log("Running expensive calculation");
+    return count * 100;
+  }, [count]);
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+      <p>Expensive Calculation: {expensiveCalculation}</p>
+    </div>
+  );
+}
+
+
+===================================================================
+
+useCallback	Memoizes functions to prevent re-creating them on each render.	When passing functions as props to prevent unnecessary re-renders of child components.
+useRef	Provides a mutable object for persisting values between renders and accessing DOM elements.	When you need to store values without causing re-renders or directly access/manipulate DOM elements.
+useMemo	Memoizes the result of expensive calculations.	When you have expensive computations that should not be re-calculated on every render.
